@@ -41,12 +41,25 @@ async function run() {
 
     // Delete a task
 
-    app.delete("/delete/:id", async (req, res) => {
+    app.delete("/delete-task/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await taskCollections.deleteOne(query);
       res.send(result);
     });
+
+        // Complete task
+        app.put('/complete-task/:id', async (req, res) => {
+          const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+          const updateDoc = {
+            $set: {status: 2}
+          };
+          const result = await taskCollections.updateOne(query, updateDoc);
+          res.send({result})
+        })
+
+    
   } finally {
     // await client.close()
   }
